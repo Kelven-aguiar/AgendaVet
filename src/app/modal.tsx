@@ -11,25 +11,42 @@ import {
 
 export default function Modal() {
   const [clientName, setClientName] = useState('');
+  const [data, setData] = useState('');
   const [time, setTime] = useState('');
-  const [day, setDay] = useState('');
   const [petName, setPetName] = useState('');
   const [reason, setReason] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
 
-  const handleRegister = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!clientName || !time || !day || !petName || !reason) {
+    if (!clientName || !data || !time || !petName || !reason) {
       setErrorMessage('Todos os campos devem ser preenchidos.');
       return;
     }
 
-    console.log('Nome do cliente: ' + clientName);
-    console.log('Horário: ' + time);
-    console.log('Dia: ' + day);
-    console.log('Nome do Pet: ' + petName);
-    console.log('Motivo: ' + reason);
+    try {
+      const response = await fetch('/api', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'VetQuery/json',
+        },
+        body: JSON.stringify({
+          clientName,
+          data,
+          time,
+          petName,
+          reason,
+        }),
+      });
+
+      if (response.ok) {
+        console.log('Dados enviados com sucesso!');
+        console.log(response.json());
+      }
+    } catch (error) {
+      console.error('Erro ao fazer a solicitação:', error);
+    }
 
     setErrorMessage('');
     setModalOpen(false);
@@ -60,6 +77,17 @@ export default function Modal() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">
+                  Data
+                </label>
+                <input
+                  type="date"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  onChange={(e) => setData(e.target.value)}
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
                   Horário
                 </label>
                 <input
@@ -68,16 +96,7 @@ export default function Modal() {
                   onChange={(e) => setTime(e.target.value)}
                 />
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Dia
-                </label>
-                <input
-                  type="date"
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                  onChange={(e) => setDay(e.target.value)}
-                />
-              </div>
+
               <div>
                 <label className="block text-sm font-medium text-gray-700">
                   Nome do Pet
@@ -98,11 +117,12 @@ export default function Modal() {
                   onChange={(e) => setReason(e.target.value)}
                 />
               </div>
+
               {errorMessage && (
                 <div className="text-red-500 text-sm">{errorMessage}</div>
               )}
               <button
-                onClick={handleRegister}
+                type="submit"
                 className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
               >
                 Cadastrar
