@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-
+import dayjs from 'dayjs';
 import {
   Dialog,
   DialogContent,
@@ -9,7 +9,7 @@ import {
   DialogTitle,
 } from '../components/ui/dialog';
 
-export default function Modal() {
+export default function modal() {
   const [clientName, setClientName] = useState('');
   const [data, setData] = useState('');
   const [time, setTime] = useState('');
@@ -24,7 +24,7 @@ export default function Modal() {
       setErrorMessage('Todos os campos devem ser preenchidos.');
       return;
     }
-
+    const dateTimeString = dayjs(`${data} ${time}`).toISOString();
     try {
       const response = await fetch('/api', {
         method: 'POST',
@@ -33,8 +33,7 @@ export default function Modal() {
         },
         body: JSON.stringify({
           clientName,
-          data,
-          time,
+          data: dateTimeString,
           petName,
           reason,
         }),
@@ -47,7 +46,11 @@ export default function Modal() {
     } catch (error) {
       console.error('Erro ao fazer a solicitação:', error);
     }
-
+    setClientName('');
+    setData('');
+    setPetName('');
+    setReason('');
+    setTime('');
     setErrorMessage('');
     setModalOpen(false);
   };

@@ -13,7 +13,6 @@ datasource db {
 model VetQuery {
   clientName String @id
   data DateTime 
-  time DateTime
   petName String
   reason String
 }
