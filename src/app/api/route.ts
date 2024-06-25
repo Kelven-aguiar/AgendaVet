@@ -5,7 +5,6 @@ const prisma = new PrismaClient();
 
 export async function POST(req: Request, response:NextApiResponse,) {
     try{
-        
         const res = await req.json();
 
         const { clientName, data, petName, reason } = res;
