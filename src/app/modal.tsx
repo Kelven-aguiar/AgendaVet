@@ -9,6 +9,8 @@ import {
   DialogTitle,
 } from '../components/ui/dialog';
 
+
+
 export default function modal() {
   const [clientName, setClientName] = useState('');
   const [data, setData] = useState('');
@@ -18,12 +20,42 @@ export default function modal() {
   const [errorMessage, setErrorMessage] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
 
+  const handleCancel = () => {
+    setClientName('');
+    setData('');
+    setPetName('');
+    setReason('');
+    setTime('');
+    setErrorMessage('');
+    setModalOpen(false);
+  };
+
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const isValidDate = (dateString: string) => {
+      const regex = /^\d{4}-\d{2}-\d{2}$/;
+
+      if (!regex.test(dateString)) {
+        return false;
+      }
+
+      const year = parseInt(dateString.substring(0, 4), 10);
+      if (isNaN(year) || year.toString().length !== 4) {
+        return false;
+      }
+
+      return true;
+    };
     if (!clientName || !data || !time || !petName || !reason) {
       setErrorMessage('Todos os campos devem ser preenchidos.');
       return;
     }
+    if (!isValidDate(data)) {
+      setErrorMessage('O ano deve conter apenas 4 dígitos');
+      return;
+    }
+
     const dateTimeString = dayjs(`${data} ${time}`).toISOString();
     try {
       const response = await fetch('/api', {
@@ -46,13 +78,8 @@ export default function modal() {
     } catch (error) {
       console.error('Erro ao fazer a solicitação:', error);
     }
-    setClientName('');
-    setData('');
-    setPetName('');
-    setReason('');
-    setTime('');
-    setErrorMessage('');
-    setModalOpen(false);
+
+    handleCancel();
   };
 
   return (
@@ -124,12 +151,21 @@ export default function modal() {
               {errorMessage && (
                 <div className="text-red-500 text-sm">{errorMessage}</div>
               )}
-              <button
-                type="submit"
-                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-              >
-                Cadastrar
-              </button>
+              <div className="flex justify-between">
+                <button
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                  type="button"
+                  onClick={handleCancel}
+                >
+                  Cancelar
+                </button>
+                <button
+                  className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                  type="submit"
+                >
+                  Cadastrar
+                </button>
+              </div>
             </form>
           </DialogDescription>
         </DialogHeader>
