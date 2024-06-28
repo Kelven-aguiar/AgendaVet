@@ -9,8 +9,6 @@ import {
   DialogTitle,
 } from '../components/ui/dialog';
 
-
-
 export default function modal() {
   const [clientName, setClientName] = useState('');
   const [data, setData] = useState('');
@@ -92,7 +90,7 @@ export default function modal() {
       </button>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Registre um cliente</DialogTitle>
+          <DialogTitle>Registre um agendamento</DialogTitle>
           <DialogDescription>
             <form className="space-y-4" onSubmit={handleRegister}>
               <div>

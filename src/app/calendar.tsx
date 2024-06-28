@@ -1,24 +1,40 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import listPlugin from '@fullcalendar/list';
 
-const Calendar: React.FC = () => {
+const testCalendar: React.FC = () => {
+  const calendarRef = useRef<FullCalendar>(null);
+
   const handleDateClick = (arg: any) => {
     alert(`Clicou na data: ${arg.dateStr}`);
   };
 
   return (
     <FullCalendar
-      plugins={[dayGridPlugin, interactionPlugin]}
-      initialView="dayGridMonth"
+      ref={calendarRef}
+      plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin, listPlugin]}
+      initialView="timeGridWeek"
       locale="pt-br"
       dateClick={handleDateClick}
-      dayCellContent={(e) => (
-        <div className="hover-effect p-1 rounded-lg">{e.dayNumberText}</div>
-      )}
+      slotMinTime="06:00:00"
+      slotMaxTime="20:00:00"
+      allDaySlot={false}
+      headerToolbar={{
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek',
+      }}
+      buttonText={{
+        today: 'Hoje',
+        month: 'Mês',
+        week: 'Semana',
+        day: 'Dia',
+      }}
     />
   );
 };
 
-export default Calendar;
+export default testCalendar;
