@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "migrate": "prisma migrate dev"
   },
   "dependencies": {
     "@fullcalendar/core": "^6.1.14",
@@ -29,13 +30,11 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.8.3",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.4",
     "postcss": "^8",
-    "prettier": "^3.3.2",
     "prisma": "^5.15.1",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.4.5"

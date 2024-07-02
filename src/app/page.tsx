@@ -1,12 +1,11 @@
-'use client';
-import Calendar from './calendar';
-import AppointmentDay from './appointmentDay';
-function Page() {
-  return (
-    <div className="container mx-auto">
-      <Calendar></Calendar>
-    </div>
-  );
-}
+"use client";
 
-export default Page;
+import Calendar from "./calendar";
+
+export default function Page() {
+	return (
+		<div className="container mx-auto">
+			<Calendar></Calendar>
+		</div>
+	);
+}

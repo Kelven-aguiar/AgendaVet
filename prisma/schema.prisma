@@ -10,7 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model VetQuery {
+model vetQueries {
   clientName String @id
   data DateTime 
   petName String
